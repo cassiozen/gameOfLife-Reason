@@ -1,0 +1,22 @@
+{
+  "name": "reason-life",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world",
+    "webpack": "webpack -w"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "2.0.0",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "bs-batteries": "0.0.13",
+    "bs-webapi": "^0.7.0"
+  }
+}

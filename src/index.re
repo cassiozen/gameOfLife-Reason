@@ -12,7 +12,7 @@ let createTable = ((rows: int, columns: int)) => {
     let tr = document |> Document.createElement("tr");
     for (c in 0 to columns-1) {
       let td = document |> Document.createElement("td");
-      Element.setId(td, {j|$(r)-$(c)|j});
+      Element.setId(td, {j|$r-$c|j});
       Element.appendChild(td, tr);
     };
     Element.appendChild(tr, table);

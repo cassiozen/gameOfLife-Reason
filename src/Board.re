@@ -1,5 +1,3 @@
-type coordinates = (int, int);
-
 type board = {
   width: int,
   height: int,
@@ -9,11 +7,11 @@ type board = {
 
 let x = None;
 
-let indexFor = ((row, col):coordinates, board:board) => {
+let indexFor = ((row, col), board) => {
   if (row < 0 || row >= board.height || col < 0 || col >= board.width) None else Some(row * board.width + col)
 };
 
-let getCell = (coords:coordinates, board:board) => {
+let getCell = (coords, board) => {
   let index = indexFor(coords, board);
   switch index {
     | None => 0
@@ -21,7 +19,7 @@ let getCell = (coords:coordinates, board:board) => {
   };
 };
 
-let setCell = (value: int, coords:coordinates, board:board) => {
+let setCell = (value, coords, board) => {
   let index = indexFor(coords, board);
   switch index {
     | None => ()
@@ -29,7 +27,7 @@ let setCell = (value: int, coords:coordinates, board:board) => {
   };
 };
 
-let toggleCell = (coords:coordinates, board:board) => {
+let toggleCell = (coords, board) => {
   let index = indexFor(coords, board);
   switch index {
     | None => ()
@@ -37,7 +35,7 @@ let toggleCell = (coords:coordinates, board:board) => {
   };
 };
 
-let livingNeighbors = ((row, col):coordinates, board:board) => {
+let livingNeighbors = ((row, col), board) => {
   getCell((row - 1, col - 1), board) +
   getCell((row - 1, col), board) +
   getCell((row - 1, col + 1), board) +
@@ -51,7 +49,7 @@ let livingNeighbors = ((row, col):coordinates, board:board) => {
   getCell((row + 1, col + 1), board)
 };
 
-let conwayRule = (cellValue: int, livingNeighbors: int) => {
+let conwayRule = (cellValue, livingNeighbors) => {
   let isAlive = cellValue === 1;
   if(isAlive) {
     if(livingNeighbors === 2 || livingNeighbors === 3) 1 else 0;
@@ -60,7 +58,7 @@ let conwayRule = (cellValue: int, livingNeighbors: int) => {
   }
 };
 
-let tick = (present: board, future: board, ~rule=conwayRule, ()) => {
+let tick = (present, future, ~rule=conwayRule, ()) => {
   for (r in 0 to future.height) {
     for (c in 0 to future.width) {
       let coords = (r, c);
@@ -68,10 +66,9 @@ let tick = (present: board, future: board, ~rule=conwayRule, ()) => {
       setCell(nextCell, coords, future);
     };
   };
-  future;
 };
 
-let make = ((w: int, h: int)) => {
+let make = ((w, h)) => {
   {
     width: w,
     height: h,

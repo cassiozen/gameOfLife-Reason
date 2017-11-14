@@ -32,11 +32,10 @@ let createTable = ((rows, columns)) => {
 };
 
 let size = (40, 60);
-
 let presentBoard = ref(Board.make(size));
 let futureBoard = ref(Board.make(size));
-
 let table = createTable(size);
+let interval:ref(option(Js.Global.intervalId)) = ref(None);
 
 let root = WebApi.document 
   |> WebApi.Document.getElementById("root")
@@ -59,7 +58,10 @@ let paint = () => {
 
 
 let step = (rules) => {
-  Board.tick(presentBoard^, futureBoard^, ~rule=rules, ());
+  switch rules {
+    | Some(v) => Board.tick(presentBoard^, futureBoard^, ~rule=v, ())
+    | None => Board.tick(presentBoard^, futureBoard^, ());
+  };
 
   /* Swap the present and future boards
   (The future board is now the present, and we'll re-use the present
@@ -71,28 +73,25 @@ let step = (rules) => {
 };
 
 let randomizeBoard = (_event) => {
-  step((_cellValue, _livingNeighbors) => {
+  step(Some((_cellValue, _livingNeighbors) => {
     Random.int(2);
-  });
+  }));
+};
+
+let play = (_event) => {
+  switch interval^ {
+    | Some(id) => {
+        Js.Global.clearInterval(id);
+        interval := None;
+      }
+    | None => interval := Some(Js.Global.setInterval(() => {step(None)}, 100));
+  };
 };
 
 WebApi.document 
   |> WebApi.Document.getElementById("reset_btn")
   |> map(WebApi.Element.addEventListener("click", randomizeBoard));
 
-
-
-
-
-/* // Connect #step_btn to the step function
-document.getElementById('step_btn')
-  .addEventListener('click', game.step)
-
-document.getElementById('play_btn')
-  .addEventListener('click', game.togglePlaying)
-
-document.getElementById('clear_btn')
-  .addEventListener('click', game.clear)
-
-document.getElementById('reset_btn')
-  .addEventListener('click', game.random) */
+WebApi.document 
+  |> WebApi.Document.getElementById("play_btn")
+  |> map(WebApi.Element.addEventListener("click", play));

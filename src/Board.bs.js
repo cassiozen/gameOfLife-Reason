@@ -100,7 +100,7 @@ function tick(present, future, $staropt$star, _) {
       setCell(nextCell, coords, future);
     }
   }
-  return future;
+  return /* () */0;
 }
 
 function make(param) {

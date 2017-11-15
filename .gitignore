@@ -1,3 +1,4 @@
 .DS_Store
+.bs.js
 node_modules
-build
+lib

@@ -4,11 +4,9 @@ type board = {
   cells: array(int),
 };
 
-
-let x = None;
-
 let indexFor = ((row, col), board) => {
-  if (row < 0 || row >= board.height || col < 0 || col >= board.width) None else Some(row * board.width + col)
+  if (row < 0 || row >= board.height || col < 0 || col >= board.width) None 
+  else Some(row * board.width + col);
 };
 
 let getCell = (coords, board) => {
@@ -24,14 +22,6 @@ let setCell = (value, coords, board) => {
   switch index {
     | None => ()
     | Some(i) => board.cells[i] = value
-  };
-};
-
-let toggleCell = (coords, board) => {
-  let index = indexFor(coords, board);
-  switch index {
-    | None => ()
-    | Some(i) => board.cells[i] = if(board.cells[i] === 0) 1 else 0;
   };
 };
 
